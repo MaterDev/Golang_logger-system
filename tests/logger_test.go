@@ -1,8 +1,13 @@
 package tests
 
 import (
-	"golang-logger-system/internal/logger"
+	"bytes"
+	"io"
+	"os"
+	"strings"
 	"testing"
+
+	"golang-logger-system/internal/logger"
 )
 
 // Mock implementation of the Logger interface for testing
@@ -46,5 +51,50 @@ func TestLoggerInterface(t *testing.T)	{
 	}
 	if !mock.DebugCalled {
 		t.Error("Debug method was not called")
+	}
+}
+
+func TestConsoleLogger(t *testing.T) {
+	// Redirect stout to capture output
+	oldStdout := os.Stdout
+	// ? `r` is the read end of the pipe (what will be used to get the captured output)
+	// ? `w` is the write end of the pipe. (Anything written to pipe will be written here.) 
+	r, w, _ := os.Pipe()
+	// ? Redirect stdout to the write end of the pipe
+	os.Stdout = w // Will clear Stdoutput by assigning it to the empty value `w` (where things get written)
+
+	// ! Subsequent writes will go to the pipe instead of the terminal.
+
+
+	// Create and use the logger
+	l := logger.NewConsoleLogger()
+	l.Info("Test Info message")
+	l.Error("Test Error message")
+	l.Debug("Test Debug message")
+
+	// Restore stdout
+	w.Close() // Close the write pipe (No more data will be written to pipe.)
+		// If the written end of the pipe isnt closed, subsequent operations will be waiting for more data.
+	os.Stdout = oldStdout // Reconnect stdout to terminal
+
+	// ! Read captured output:
+	
+	// Make buffer for storing bytes
+	var buff bytes.Buffer
+	// Copy read end of the pipe to the address of the buffer
+	io.Copy(&buff, r)
+	// Return contents of buffer as a strong to store in output variable
+	output := buff.String()
+
+	expectedMessages := []string{
+		"INFO: Test Info message",
+		"ERROR: Test Error message",
+		"DEBUG: Test Debug message",
+	}
+
+	for _, msg := range expectedMessages {
+		if !strings.Contains(output, msg) {
+			t.Errorf("Expected output to contain '%s', but it didn't", msg)
+		}
 	}
 }

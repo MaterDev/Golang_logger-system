@@ -98,3 +98,47 @@ func TestConsoleLogger(t *testing.T) {
 		}
 	}
 }
+
+func TestFileLogger(t *testing.T) {
+	// Create temporary file for testing
+		// in the default testing directory, name beginning with test_log
+	tmpfile, err := os.CreateTemp("", "test_log")
+
+	if err != nil {
+		t.Fatalf("Failed to create temp file: %v", err)
+	}
+
+	// At the end of the scope will remove the temporary file
+	defer os.Remove(tmpfile.Name())
+
+	// Create and use logger, giving the temporary file
+	l, err := logger.NewFileLogger(tmpfile.Name())
+	if err != nil {
+		t.Fatalf("Failed to create FileLogger: %v", err)
+	}
+	// Close the file at the end
+	defer l.Close()
+
+	// Call all the log methods (to write to the temp file)
+	l.Info("Test Info message")
+	l.Error("Test Error message")
+	l.Debug("Test Debug message")
+
+	// Read the log file
+	content, err := os.ReadFile(tmpfile.Name())
+	if err != nil {
+		t.Fatalf("Failed to read log file: %v", err)
+	}
+
+	expectedMessages := []string{
+		"INFO: Test Info message",
+		"ERROR: Test Error message",
+		"DEBUG: Test Debug message",
+	}
+
+	for _, msg := range expectedMessages {
+		if !strings.Contains(string(content), msg) {
+			t.Errorf("Expected output to contain '%s', but it didn't", msg)
+		}
+	}
+}

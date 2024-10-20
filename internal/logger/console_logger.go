@@ -24,7 +24,7 @@ func NewConsoleLogger() *ConsoleLogger {
 func (l *ConsoleLogger) log(level, message string, args ...interface{}) {
 	timestamp := time.Now().Format("02 Jan 06 15:04 -0700")
 	formattedMessage := fmt.Sprintf(message, args...)
-	fmt.Printf("[%v] %s: %s", timestamp, level, formattedMessage)
+	fmt.Printf("[%v] %s: %s\n", timestamp, level, formattedMessage)
 }
 
 func (l *ConsoleLogger) Info(message string, args ...interface{}) {

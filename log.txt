@@ -1,0 +1,6 @@
+[19 Oct 24 22:35 -0500] INFO: This is an info message from the file logger
+[19 Oct 24 22:35 -0500] ERROR: This is an error message from the file logger
+[19 Oct 24 22:35 -0500] DEBUG: This is an debug message from the file logger
+[19 Oct 24 22:35 -0500] INFO: This is an info message from the file logger
+[19 Oct 24 22:35 -0500] ERROR: This is an error message from the file logger
+[19 Oct 24 22:35 -0500] DEBUG: This is an debug message from the file logger

@@ -2,6 +2,8 @@
 
 This project demonstrates the implementation of a flexible logging system in Go using the Factory Method pattern. It provides a simple way to create and use different types of loggers while maintaining a consistent interface.
 
+![cover](./images/cover.png)
+
 ## Features
 
 - Console Logger: Outputs log messages to the console
@@ -20,7 +22,7 @@ This project demonstrates the implementation of a flexible logging system in Go 
 
 1. Clone the repository:
    ```
-   git clone git@github.com:MaterDev/Golang_logger-system.git
+   git clone https://github.com/MaterDev/Golang_logger-system.git
    ```
 
 2. Navigate to the project directory:

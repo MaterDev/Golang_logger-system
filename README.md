@@ -67,6 +67,22 @@ To run the tests for this project:
 go test ./tests
 ```
 
+## Running Main Application
+
+```bash
+go run cmd/main.go
+```
+
+### Example Outputs
+
+`Console Logger:`
+
+![Console Logger Screenshot](./images/consolelogger.png)
+
+`File Logger:`
+
+![File Logger Screenshot](./images/filelogger.png)
+
 ## Design Pattern: Factory Method
 
 This project demonstrates the Factory Method pattern, which provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. 
